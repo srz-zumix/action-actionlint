@@ -28,13 +28,14 @@ else
 fi
 
 OS_NAME=$(uname -s | tr '[:upper:]' '[:lower:]')
-
+PATH_SEPARATOR="/"
 case "${OS_NAME}" in
   linux) ;;
   darwin) ;;
   *)
     OS_NAME="windows"
     EXECUTABLE_EXT=".exe"
+    PATH_SEPARATOR="\\"
     ;;
 esac
 
@@ -68,13 +69,13 @@ else
     echo "shellcheck v${SHELLCHECK_VERSION} is already installed."
 fi
 
-PATH="${SHELLCHECK_PATH}/bin:$PATH"
+PATH="${SHELLCHECK_PATH}${PATH_SEPARATOR}bin:$PATH"
 shellcheck --version
 echo '::endgroup::'
 
 # path to pyflakes
-pipx install pyflakes
-# PATH="${GITHUB_ACTION_PATH}/bin:$PATH"
+PATH="${GITHUB_ACTION_PATH}${PATH_SEPARATOR}bin:$PATH"
+# pipx install pyflakes
 # pyflakes --version
   
 echo '::group::🐶 Installing actionlint ... https://github.com/rhysd/actionlint'
@@ -92,7 +93,7 @@ else
     echo "actionlint v${ACTIONLINT_VERSION} is already installed."
 fi
 
-PATH="${ACTIONLINT_PATH}/bin:$PATH"
+PATH="${ACTIONLINT_PATH}${PATH_SEPARATOR}bin:$PATH"
 actionlint --version
 echo '::endgroup::'
 
