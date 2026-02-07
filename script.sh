@@ -59,7 +59,7 @@ install_shellcheck() {
     curl -sL "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" -o "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" && unzip "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" && rm "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}"
     cp "shellcheck.exe" "${SHELLCHECK_PATH}/bin"
     ls -la "${SHELLCHECK_PATH}/bin"
-    shellcheck.exe --version
+    ./shellcheck.exe --version
   fi
 }
 
@@ -75,7 +75,8 @@ echo '::endgroup::'
 
 # path to pyflakes
 # pipx install pyflakes
-export PATH="${GITHUB_ACTION_PATH}/bin:$PATH"
+ACTION_PATH=$(cd "${GITHUB_ACTION_PATH}" && pwd)
+export PATH="${ACTION_PATH}/bin:$PATH"
 # pyflakes --version
   
 echo '::group::🐶 Installing actionlint ... https://github.com/rhysd/actionlint'
