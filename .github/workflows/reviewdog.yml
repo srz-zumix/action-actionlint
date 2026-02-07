@@ -20,6 +20,7 @@ jobs:
     runs-on: ${{ matrix.runs-on }}
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - run: python --version
       - name: actionlint
         uses: ./
         with:
@@ -34,6 +35,7 @@ jobs:
         uses: ./
         with:
           actionlint_flags: examples/broken-workflow.yml
+          reviewdog_flags: -tee
           tool_name: reviewdog
 
   shellcheck:
@@ -45,6 +47,7 @@ jobs:
         uses: ./
         with:
           actionlint_flags: examples/shellcheck.yml
+          reviewdog_flags: -tee
           tool_name: shellcheck
 
   pyflakes:
@@ -52,10 +55,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
-      - run: |
-          mv examples/pyflakes.yml .github/workflows/pyflakes.yml
       - name: actionlint w/ pyflakes
         uses: ./
         with:
-          actionlint_flags: .github/workflows/pyflakes.yml
+          actionlint_flags: examples/pyflakes.yml
+          reviewdog_flags: -tee
           tool_name: pyflakes
