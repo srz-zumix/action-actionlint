@@ -35,7 +35,6 @@ jobs:
         uses: ./
         with:
           actionlint_flags: examples/broken-workflow.yml
-          reviewdog_flags: -tee
           reporter: sarif
           filter_mode: nofilter
           tool_name: reviewdog
@@ -49,7 +48,6 @@ jobs:
         uses: ./
         with:
           actionlint_flags: examples/shellcheck.yml
-          reviewdog_flags: -tee
           reporter: sarif
           filter_mode: nofilter
           tool_name: shellcheck
@@ -63,7 +61,6 @@ jobs:
         uses: ./
         with:
           actionlint_flags: examples/pyflakes.yml
-          reviewdog_flags: -tee
           reporter: sarif
           filter_mode: nofilter
           tool_name: pyflakes
