@@ -37,7 +37,7 @@ jobs:
         uses: ./
         with:
           actionlint_flags: examples/broken-workflow.yml
-          reporter: sarif
+          reporter: github-pr-review
           filter_mode: nofilter
           fail_level: any
           tool_name: reviewdog
@@ -59,7 +59,7 @@ jobs:
         uses: ./
         with:
           actionlint_flags: examples/shellcheck.yml
-          reporter: sarif
+          reporter: github-pr-review
           filter_mode: nofilter
           fail_level: any
           tool_name: shellcheck
@@ -81,7 +81,7 @@ jobs:
         uses: ./
         with:
           actionlint_flags: examples/pyflakes.yml
-          reporter: sarif
+          reporter: github-pr-review
           filter_mode: nofilter
           fail_level: any
           tool_name: pyflakes
