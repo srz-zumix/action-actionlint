@@ -68,8 +68,7 @@ install_actionlint() {
   ACTIONLINT_PATH="${RUNNER_TOOL_CACHE}/actionlint/${ACTIONLINT_VERSION}"
   mkdir -p "${ACTIONLINT_PATH}/bin"
   cd "${ACTIONLINT_PATH}/bin" || exit 1
-  local OSTYPE=$(uname -s | tr '[:upper:]' '[:lower:]')
-  wget -O - -q https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash | sh -s -- "${ACTIONLINT_VERSION}"
+  bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) "${ACTIONLINT_VERSION}"
 }
 
 if [ ! -f "${RUNNER_TOOL_CACHE}/actionlint/${ACTIONLINT_VERSION}/bin/actionlint" ]; then
