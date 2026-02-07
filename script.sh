@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu
 
-if [ "${RUNNER_DEBUG}" = "1" ] ; then
+if [ "${RUNNER_DEBUG:-}" = "1" ] ; then
   set -x
 fi
 
@@ -15,7 +15,7 @@ export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
 cd "${RUNNER_TEMP}" || exit 1
 
-if [ -z "${RUNNER_TOOL_CACHE}" ]; then
+if [ -z "${RUNNER_TOOL_CACHE:-}" ]; then
   RUNNER_TOOL_CACHE="$(mktemp -d)"
 fi
 
