@@ -32,12 +32,21 @@ jobs:
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
       - name: actionlint w/ reviewdog
+        id: actionlint
+        continue-on-error: true
         uses: ./
         with:
           actionlint_flags: examples/broken-workflow.yml
           reporter: sarif
           filter_mode: nofilter
+          fail_level: any
           tool_name: reviewdog
+      - name: Expect reviewdog to find issues
+        run: |
+          if [ "${{ steps.actionlint.outcome }}" != "failure" ]; then
+            echo "Expected failure but got ${{ steps.actionlint.outcome }}"
+            exit 1
+          fi
 
   shellcheck:
     name: runner / shellcheck
@@ -45,12 +54,21 @@ jobs:
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
       - name: actionlint w/ shellcheck
+        id: actionlint
+        continue-on-error: true
         uses: ./
         with:
           actionlint_flags: examples/shellcheck.yml
           reporter: sarif
           filter_mode: nofilter
+          fail_level: any
           tool_name: shellcheck
+      - name: Expect reviewdog to find issues
+        run: |
+          if [ "${{ steps.actionlint.outcome }}" != "failure" ]; then
+            echo "Expected failure but got ${{ steps.actionlint.outcome }}"
+            exit 1
+          fi
 
   pyflakes:
     name: runner / pyflakes
@@ -58,9 +76,18 @@ jobs:
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
       - name: actionlint w/ pyflakes
+        id: actionlint
+        continue-on-error: true
         uses: ./
         with:
           actionlint_flags: examples/pyflakes.yml
           reporter: sarif
           filter_mode: nofilter
+          fail_level: any
           tool_name: pyflakes
+      - name: Expect reviewdog to find issues
+        run: |
+          if [ "${{ steps.actionlint.outcome }}" != "failure" ]; then
+            echo "Expected failure but got ${{ steps.actionlint.outcome }}"
+            exit 1
+          fi

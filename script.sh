@@ -113,7 +113,6 @@ done \
         ${INPUT_REVIEWDOG_FLAGS} \
     | tee "${INPUT_OUTPUT_DIR}/${OUTPUT_FILE_NAME}"
 
-echo "${#PIPESTATUS[@]}"
 exit_code=${PIPESTATUS[2]}
 echo '::endgroup::'
 exit "$exit_code"
