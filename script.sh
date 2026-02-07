@@ -68,7 +68,7 @@ else
 fi
 
 PATH="${SHELLCHECK_PATH}/bin:$PATH"
-shellcheck --version
+"shellcheck${EXECUTABLE_EXT:-}" --version
 echo '::endgroup::'
 
 # path to pyflakes
