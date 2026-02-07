@@ -61,7 +61,7 @@ echo '::endgroup::'
 
 # path to pyflakes
 PATH="${GITHUB_ACTION_PATH}/bin:$PATH"
-pyflakes --version
+# pyflakes --version
   
 echo '::group::🐶 Installing actionlint ... https://github.com/rhysd/actionlint'
 
@@ -110,8 +110,10 @@ done \
         -filter-mode="${INPUT_FILTER_MODE}" \
         -fail-level="${INPUT_FAIL_LEVEL}" \
         -level="${INPUT_LEVEL}" \
-        ${INPUT_REVIEWDOG_FLAGS}
+        ${INPUT_REVIEWDOG_FLAGS} \
+    | tee "${INPUT_OUTPUT_DIR}/${OUTPUT_FILE_NAME}"
 
-exit_code=$?
+
+exit_code=${PIPESTATUS[-2]}
 echo '::endgroup::'
 exit "$exit_code"
