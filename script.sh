@@ -89,7 +89,7 @@ fi
 
 echo '::group:: Running actionlint with reviewdog 🐶 ...'
 # shellcheck disable=SC2086
-actionlint --pyflakes "${GITHUB_ACTION_PATH}/bin/pyflakes" -oneline ${INPUT_ACTIONLINT_FLAGS} | while read -r r; do
+actionlint -oneline ${INPUT_ACTIONLINT_FLAGS} | while read -r r; do
   shellcheck_output=" shellcheck reported issue in this script: "
   severity=e
 
