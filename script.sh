@@ -38,7 +38,7 @@ case "${OS_NAME}" in
     ;;
 esac
 
-echo '::group:: Installing shellcheck ... https://github.com/koalaman/shellcheck'
+echo '::group::🐶 Installing shellcheck ... https://github.com/koalaman/shellcheck'
 SHELLCHECK_PATH="${RUNNER_TOOL_CACHE}/shellcheck/${SHELLCHECK_VERSION}"
 mkdir -p "${SHELLCHECK_PATH}/bin"
 
@@ -58,8 +58,6 @@ install_shellcheck() {
   else
     curl -sL "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" -o "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" && unzip "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" && rm "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}"
     cp "shellcheck.exe" "${SHELLCHECK_PATH}/bin"
-    ls -la "${SHELLCHECK_PATH}/bin"
-    ./shellcheck.exe --version
   fi
 }
 
@@ -70,14 +68,14 @@ else
 fi
 
 export PATH="${SHELLCHECK_PATH}/bin:$PATH"
-shellcheck --version
+shellcheck.exe --version || true
 echo '::endgroup::'
 
 # path to pyflakes
 # pipx install pyflakes
 ACTION_PATH=$(cd "${GITHUB_ACTION_PATH}" && pwd)
 export PATH="${ACTION_PATH}/bin:$PATH"
-# pyflakes --version
+pyflakes --version
   
 echo '::group::🐶 Installing actionlint ... https://github.com/rhysd/actionlint'
 
