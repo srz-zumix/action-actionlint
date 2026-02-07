@@ -19,6 +19,25 @@ if [ -z "${RUNNER_TOOL_CACHE:-}" ]; then
   RUNNER_TOOL_CACHE="$(mktemp -d)"
 fi
 
+# Get system architecture
+ARCH=$(uname -m)
+if [[ "${ARCH}" == "arm64" || "${ARCH}" == "aarch64" ]]; then
+  CPU_ARCH="aarch64"
+else
+  CPU_ARCH="x86_64"
+fi
+
+OS_NAME=$(uname -s | tr '[:upper:]' '[:lower:]')
+
+case "${OS_NAME}" in
+  linux) ;;
+  darwin) ;;
+  *)
+    OS_NAME="windows"
+    EXECUTABLE_EXT=".exe"
+    ;;
+esac
+
 echo '::group:: Installing shellcheck ... https://github.com/koalaman/shellcheck'
 SHELLCHECK_PATH="${RUNNER_TOOL_CACHE}/shellcheck/${SHELLCHECK_VERSION}"
 mkdir -p "${SHELLCHECK_PATH}/bin"
@@ -26,41 +45,35 @@ mkdir -p "${SHELLCHECK_PATH}/bin"
 install_shellcheck() {
   local WINDOWS_TARGET=zip
   
-  # Get system architecture
-  local ARCH=$(uname -m)
-  if [[ "${ARCH}" == "arm64" || "${ARCH}" == "aarch64" ]]; then
-    CPU_ARCH="aarch64"
-  else
-    CPU_ARCH="x86_64"
-  fi
   
   # Set targets based on OS and architecture
-  if [[ $(uname -s) == "Linux" ]]; then
+  if [[ "${OS_NAME}" == "linux" ]]; then
     local LINUX_TARGET="linux.${CPU_ARCH}.tar.xz"
     curl -sL "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.${LINUX_TARGET}" | tar -xJf -
     cp "shellcheck-v$SHELLCHECK_VERSION/shellcheck" "${SHELLCHECK_PATH}/bin"
-  elif [[ $(uname -s) == "Darwin" ]]; then
+  elif [[ "${OS_NAME}" == "darwin" ]]; then
     local MACOS_TARGET="darwin.${CPU_ARCH}.tar.xz"
     curl -sL "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.${MACOS_TARGET}" | tar -xJf -
     cp "shellcheck-v$SHELLCHECK_VERSION/shellcheck" "${SHELLCHECK_PATH}/bin"
   else
     curl -sL "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" -o "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" && unzip "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" && rm "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}"
-    cp "shellcheck.exe" "${SHELLCHECK_PATH}/bin/shellcheck"
+    cp "shellcheck.exe" "${SHELLCHECK_PATH}/bin/shellcheck.exe"
   fi
 }
 
-if [ ! -f "${SHELLCHECK_PATH}/bin/shellcheck" ] && [ ! -f "${SHELLCHECK_PATH}/bin/shellcheck.exe" ]; then
+if [ ! -f "${SHELLCHECK_PATH}/bin/shellcheck${EXECUTABLE_EXT:-}" ]; then
     install_shellcheck
 else
     echo "shellcheck v${SHELLCHECK_VERSION} is already installed."
 fi
 
 PATH="${SHELLCHECK_PATH}/bin:$PATH"
-shellcheck --version
+"shellcheck${EXECUTABLE_EXT:-}" --version
 echo '::endgroup::'
 
 # path to pyflakes
-PATH="${GITHUB_ACTION_PATH}/bin:$PATH"
+pipx install pyflakes
+# PATH="${GITHUB_ACTION_PATH}/bin:$PATH"
 # pyflakes --version
   
 echo '::group::🐶 Installing actionlint ... https://github.com/rhysd/actionlint'
@@ -72,14 +85,14 @@ install_actionlint() {
   bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/f8a7ad2624edffd2d432f5b4f40d79b92e48df6a/scripts/download-actionlint.bash) "${ACTIONLINT_VERSION}"
 }
 
-if [ ! -f "${RUNNER_TOOL_CACHE}/actionlint/${ACTIONLINT_VERSION}/bin/actionlint" ]; then
+if [ ! -f "${RUNNER_TOOL_CACHE}/actionlint/${ACTIONLINT_VERSION}/bin/actionlint${EXECUTABLE_EXT:-}" ]; then
     install_actionlint
 else
     echo "actionlint v${ACTIONLINT_VERSION} is already installed."
 fi
 
 PATH="${ACTIONLINT_PATH}/bin:$PATH"
-actionlint --version
+"actionlint${EXECUTABLE_EXT:-}" --version
 echo '::endgroup::'
 
 if [ -n "${GITHUB_WORKSPACE}" ]; then
