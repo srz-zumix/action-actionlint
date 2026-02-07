@@ -28,14 +28,13 @@ else
 fi
 
 OS_NAME=$(uname -s | tr '[:upper:]' '[:lower:]')
-PATH_SEPARATOR="/"
+
 case "${OS_NAME}" in
   linux) ;;
   darwin) ;;
   *)
     OS_NAME="windows"
     EXECUTABLE_EXT=".exe"
-    PATH_SEPARATOR="\\"
     ;;
 esac
 
@@ -59,7 +58,6 @@ install_shellcheck() {
   else
     curl -sL "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" -o "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" && unzip "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" && rm "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}"
     cp "shellcheck.exe" "${SHELLCHECK_PATH}/bin"
-    ls -la "${SHELLCHECK_PATH}/bin"
   fi
 }
 
@@ -69,13 +67,13 @@ else
     echo "shellcheck v${SHELLCHECK_VERSION} is already installed."
 fi
 
-PATH="${SHELLCHECK_PATH}${PATH_SEPARATOR}bin:$PATH"
-"shellcheck${EXECUTABLE_EXT:-}" --version
+export PATH="${SHELLCHECK_PATH}/bin:$PATH"
+shellcheck --version
 echo '::endgroup::'
 
 # path to pyflakes
-PATH="${GITHUB_ACTION_PATH}${PATH_SEPARATOR}bin:$PATH"
 # pipx install pyflakes
+export PATH="${GITHUB_ACTION_PATH}/bin:$PATH"
 # pyflakes --version
   
 echo '::group::🐶 Installing actionlint ... https://github.com/rhysd/actionlint'
@@ -93,7 +91,7 @@ else
     echo "actionlint v${ACTIONLINT_VERSION} is already installed."
 fi
 
-PATH="${ACTIONLINT_PATH}${PATH_SEPARATOR}bin:$PATH"
+export PATH="${ACTIONLINT_PATH}/bin:$PATH"
 actionlint --version
 echo '::endgroup::'
 
