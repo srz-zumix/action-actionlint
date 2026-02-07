@@ -10,7 +10,14 @@ permissions:
 jobs:
   actionlint:
     name: runner / actionlint
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        runs-on:
+          - ubuntu-latest
+          - ubuntu-slim
+          - windows-latest
+          - macos-latest
+    runs-on: ${{ matrix.runs-on }}
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
       - name: actionlint
