@@ -57,7 +57,7 @@ install_shellcheck() {
     cp "shellcheck-v$SHELLCHECK_VERSION/shellcheck" "${SHELLCHECK_PATH}/bin"
   else
     curl -sL "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" -o "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" && unzip "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" && rm "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}"
-    cp "shellcheck.exe" "${SHELLCHECK_PATH}/bin/shellcheck.exe"
+    cp "shellcheck.exe" "${SHELLCHECK_PATH}/bin"
   fi
 }
 
@@ -68,7 +68,7 @@ else
 fi
 
 PATH="${SHELLCHECK_PATH}/bin:$PATH"
-"shellcheck${EXECUTABLE_EXT:-}" --version
+shellcheck --version
 echo '::endgroup::'
 
 # path to pyflakes
@@ -92,7 +92,7 @@ else
 fi
 
 PATH="${ACTIONLINT_PATH}/bin:$PATH"
-"actionlint${EXECUTABLE_EXT:-}" --version
+actionlint --version
 echo '::endgroup::'
 
 if [ -n "${GITHUB_WORKSPACE}" ]; then
