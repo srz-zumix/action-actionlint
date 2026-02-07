@@ -36,6 +36,7 @@ jobs:
         with:
           actionlint_flags: examples/broken-workflow.yml
           reviewdog_flags: -tee
+          filter_mode: nofilter
           tool_name: reviewdog
 
   shellcheck:
@@ -48,6 +49,7 @@ jobs:
         with:
           actionlint_flags: examples/shellcheck.yml
           reviewdog_flags: -tee
+          filter_mode: nofilter
           tool_name: shellcheck
 
   pyflakes:
@@ -60,4 +62,5 @@ jobs:
         with:
           actionlint_flags: examples/pyflakes.yml
           reviewdog_flags: -tee
+          filter_mode: nofilter
           tool_name: pyflakes

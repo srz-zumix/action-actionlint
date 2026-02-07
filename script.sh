@@ -60,7 +60,7 @@ shellcheck --version
 echo '::endgroup::'
 
 # path to pyflakes
-PATH="${GITHUB_ACTION_PATH}/bin:${PATH}"
+PATH="${GITHUB_ACTION_PATH}/bin:$PATH"
   
 echo '::group::🐶 Installing actionlint ... https://github.com/rhysd/actionlint'
 
