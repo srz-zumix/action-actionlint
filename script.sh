@@ -68,7 +68,7 @@ install_actionlint() {
   ACTIONLINT_PATH="${RUNNER_TOOL_CACHE}/actionlint/${ACTIONLINT_VERSION}"
   mkdir -p "${ACTIONLINT_PATH}/bin"
   cd "${ACTIONLINT_PATH}/bin" || exit 1
-  bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) "${ACTIONLINT_VERSION}"
+  bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/f8a7ad2624edffd2d432f5b4f40d79b92e48df6a/scripts/download-actionlint.bash) "${ACTIONLINT_VERSION}"
 }
 
 if [ ! -f "${RUNNER_TOOL_CACHE}/actionlint/${ACTIONLINT_VERSION}/bin/actionlint" ]; then
@@ -77,6 +77,8 @@ else
     echo "actionlint v${ACTIONLINT_VERSION} is already installed."
 fi
 
+PATH="${ACTIONLINT_PATH}/bin:$PATH"
+actionlint --version
 echo '::endgroup::'
 
 if [ -n "${GITHUB_WORKSPACE}" ]; then
