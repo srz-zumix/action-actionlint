@@ -52,8 +52,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - run: |
+          mv examples/pyflakes.yml .github/workflows/pyflakes.yml
       - name: actionlint w/ pyflakes
         uses: ./
         with:
-          actionlint_flags: examples/pyflakes.yml
+          actionlint_flags: .github/workflows/pyflakes.yml
           tool_name: pyflakes
