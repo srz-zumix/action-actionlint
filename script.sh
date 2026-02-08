@@ -57,7 +57,7 @@ install_shellcheck() {
     cp "shellcheck-v$SHELLCHECK_VERSION/shellcheck" "${SHELLCHECK_PATH}/bin"
   else
     curl -sL "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" -o "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" && unzip "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" && rm "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}"
-    cp "shellcheck-v${SHELLCHECK_VERSION}/shellcheck.exe" "${SHELLCHECK_PATH}/bin"
+    cp "shellcheck.exe" "${SHELLCHECK_PATH}/bin"
   fi
 }
 
@@ -68,7 +68,7 @@ else
 fi
 
 export PATH="${SHELLCHECK_PATH}/bin:$PATH"
-shellcheck --version
+shellcheck${EXECUTABLE_EXT:-} --version
 echo '::endgroup::'
 
 echo '::group::🐶 Installing pyflakes ... https://github.com/PyCQA/pyflakes'
