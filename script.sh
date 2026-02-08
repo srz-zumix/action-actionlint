@@ -19,6 +19,9 @@ if [ -z "${RUNNER_TOOL_CACHE:-}" ]; then
   RUNNER_TOOL_CACHE="$(mktemp -d)"
 fi
 
+# Normalize RUNNER_TOOL_CACHE to Unix-style path for Git Bash compatibility
+TOOL_CACHE_PATH="$(cd "${RUNNER_TOOL_CACHE}" && pwd)"
+
 # Get system architecture
 ARCH=$(uname -m)
 if [[ "${ARCH}" == "arm64" || "${ARCH}" == "aarch64" ]]; then
@@ -39,7 +42,7 @@ case "${OS_NAME}" in
 esac
 
 echo '::group::🐶 Installing shellcheck ... https://github.com/koalaman/shellcheck'
-SHELLCHECK_PATH="${RUNNER_TOOL_CACHE}/shellcheck/${SHELLCHECK_VERSION}"
+SHELLCHECK_PATH="${TOOL_CACHE_PATH}/shellcheck/${SHELLCHECK_VERSION}"
 mkdir -p "${SHELLCHECK_PATH}/bin"
 
 install_shellcheck() {
@@ -70,11 +73,7 @@ else
 fi
 
 export PATH="${SHELLCHECK_PATH}/bin:$PATH"
-echo "SHELLCHECK_PATH: ${SHELLCHECK_PATH}"
-echo "PATH: ${PATH}"
-which shellcheck.exe || echo "shellcheck.exe not found in PATH"
-ls -la "${SHELLCHECK_PATH}/bin/shellcheck.exe" || echo "shellcheck.exe not found at expected location"
-shellcheck${EXECUTABLE_EXT:-} --version
+shellcheck$ --version
 echo '::endgroup::'
 
 echo '::group::🐶 Installing pyflakes ... https://github.com/PyCQA/pyflakes'
@@ -85,13 +84,13 @@ echo '::endgroup::'
 echo '::group::🐶 Installing actionlint ... https://github.com/rhysd/actionlint'
 
 install_actionlint() {
-  ACTIONLINT_PATH="${RUNNER_TOOL_CACHE}/actionlint/${ACTIONLINT_VERSION}"
+  ACTIONLINT_PATH="${TOOL_CACHE_PATH}/actionlint/${ACTIONLINT_VERSION}"
   mkdir -p "${ACTIONLINT_PATH}/bin"
   cd "${ACTIONLINT_PATH}/bin" || exit 1
   bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/f8a7ad2624edffd2d432f5b4f40d79b92e48df6a/scripts/download-actionlint.bash) "${ACTIONLINT_VERSION}"
 }
 
-if [ ! -f "${RUNNER_TOOL_CACHE}/actionlint/${ACTIONLINT_VERSION}/bin/actionlint${EXECUTABLE_EXT:-}" ]; then
+if [ ! -f "${TOOL_CACHE_PATH}/actionlint/${ACTIONLINT_VERSION}/bin/actionlint${EXECUTABLE_EXT:-}" ]; then
     install_actionlint
 else
     echo "actionlint v${ACTIONLINT_VERSION} is already installed."
