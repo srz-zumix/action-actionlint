@@ -1,7 +1,3 @@
 #!/bin/bash
 
-echo "$@" >> "${RUNNER_TEMP}/pyflakes.log"
-pipx run -q pyflakes "$@" | tee "${RUNNER_TEMP}/pyflakes-report.txt"
-exit_code=${PIPESTATUS[0]}
-cat "${RUNNER_TEMP}/pyflakes-report.txt" >> "${RUNNER_TEMP}/pyflakes.log"
-exit "$exit_code"
+pipx run --no-cache -q pyflakes "$@"
