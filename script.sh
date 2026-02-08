@@ -57,7 +57,7 @@ install_shellcheck() {
     cp "shellcheck-v$SHELLCHECK_VERSION/shellcheck" "${SHELLCHECK_PATH}/bin"
   else
     curl -sL "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" -o "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" && unzip "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}" && rm "shellcheck-v${SHELLCHECK_VERSION}.${WINDOWS_TARGET}"
-    cp "shellcheck.exe" "${SHELLCHECK_PATH}/bin"
+    cp "shellcheck-v${SHELLCHECK_VERSION}/shellcheck.exe" "${SHELLCHECK_PATH}/bin"
   fi
 }
 
@@ -68,14 +68,17 @@ else
 fi
 
 export PATH="${SHELLCHECK_PATH}/bin:$PATH"
-shellcheck.exe --version || true
+shellcheck --version
 echo '::endgroup::'
 
+echo '::group::🐶 Installing pyflakes ... https://github.com/PyCQA/pyflakes'
 # path to pyflakes
 # pipx install pyflakes
-ACTION_PATH=$(cd "${GITHUB_ACTION_PATH}" && pwd)
-export PATH="${ACTION_PATH}/bin:$PATH"
+# ACTION_PATH=$(cd "${GITHUB_ACTION_PATH}" && pwd)
+# export PATH="${ACTION_PATH}/bin:$PATH"
+alias pyflakes='pipx run -q pyflakes'
 pyflakes --version
+echo '::endgroup::'
   
 echo '::group::🐶 Installing actionlint ... https://github.com/rhysd/actionlint'
 
