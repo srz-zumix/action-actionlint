@@ -70,14 +70,16 @@ else
 fi
 
 export PATH="${SHELLCHECK_PATH}/bin:$PATH"
+echo "SHELLCHECK_PATH: ${SHELLCHECK_PATH}"
+echo "PATH: ${PATH}"
+which shellcheck.exe || echo "shellcheck.exe not found in PATH"
+ls -la "${SHELLCHECK_PATH}/bin/shellcheck.exe" || echo "shellcheck.exe not found at expected location"
 shellcheck${EXECUTABLE_EXT:-} --version
 echo '::endgroup::'
 
 echo '::group::🐶 Installing pyflakes ... https://github.com/PyCQA/pyflakes'
-# pipx install pyflakes
-ACTION_PATH=$(cd "${GITHUB_ACTION_PATH}" && pwd)
-export PATH="${ACTION_PATH}/bin:$PATH"
-# pyflakes --version
+pipx install pyflakes
+pyflakes --version
 echo '::endgroup::'
   
 echo '::group::🐶 Installing actionlint ... https://github.com/rhysd/actionlint'
