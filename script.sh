@@ -73,7 +73,7 @@ else
 fi
 
 export PATH="${SHELLCHECK_PATH}/bin:$PATH"
-shellcheck$ --version
+shellcheck --version
 echo '::endgroup::'
 
 echo '::group::🐶 Installing pyflakes ... https://github.com/PyCQA/pyflakes'
