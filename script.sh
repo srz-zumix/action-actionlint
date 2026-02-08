@@ -72,11 +72,9 @@ shellcheck --version
 echo '::endgroup::'
 
 echo '::group::🐶 Installing pyflakes ... https://github.com/PyCQA/pyflakes'
-# path to pyflakes
-# pipx install pyflakes
+pipx install pyflakes
 # ACTION_PATH=$(cd "${GITHUB_ACTION_PATH}" && pwd)
 # export PATH="${ACTION_PATH}/bin:$PATH"
-alias pyflakes='pipx run -q pyflakes'
 pyflakes --version
 echo '::endgroup::'
   
