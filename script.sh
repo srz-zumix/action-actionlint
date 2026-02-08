@@ -48,7 +48,6 @@ mkdir -p "${SHELLCHECK_PATH}/bin"
 install_shellcheck() {
   local WINDOWS_TARGET=zip
   
-  
   # Set targets based on OS and architecture
   if [[ "${OS_NAME}" == "linux" ]]; then
     local LINUX_TARGET="linux.${CPU_ARCH}.tar.xz"
